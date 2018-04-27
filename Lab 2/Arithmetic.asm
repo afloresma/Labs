@@ -23,4 +23,6 @@ main:
 	
 	sw	t2,z,t6
 	
+	li	a7, 10
+	ecall
 	
