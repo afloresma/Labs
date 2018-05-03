@@ -73,7 +73,15 @@ architecture memmy of register8 is
 		 	 bitout: out std_logic);
 	end component;
 begin
-	-- insert your code here.
+	-- insert your code here
+	reg8: bitstorage port map(datain(7), enout, writein, dataout(7))
+	reg7: bitstorage port map(datain(6), enout, writein, dataout(6))
+	reg6: bitstorage port map(datain(5), enout, writein, dataout(5))
+	reg5: bitstorage port map(datain(4), enout, writein, dataout(4))
+	reg4: bitstorage port map(datain(3), enout, writein, dataout(3))
+	reg3: bitstorage port map(datain(2), enout, writein, dataout(2))
+	reg2: bitstorage port map(datain(1), enout, writein, dataout(1))
+	reg1: bitstorage port map(datain(0), enout, writein, dataout(0))
 end architecture memmy;
 
 --------------------------------------------------------------------------------
