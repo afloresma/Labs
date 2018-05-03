@@ -98,10 +98,29 @@ entity register32 is
 end entity register32;
 
 architecture biggermem of register32 is
-	-- hint: you'll want to put register8 as a component here 
-	-- so you can use it below
+	component register8
+	port(datain: in std_logic_vector(7 downto 0);
+	     enout:  in std_logic;
+	     writein: in std_logic;
+	     dataout: out std_logic_vector(7 downto 0));
+
+	SIGNAL enabler: std_logic_vector(2 downto 0);
+	SIGNAL writer: 	std_logic_vector(2 downto 0);
+
 begin
-	-- insert code here.
+	enabler(2) <= enout32;
+	enabler(1) <= enout16 or enout32;
+	enabler(0) <= enout8 or enout16;
+
+	writer(2) <= write32;
+	writer(1) <= write16 or write32;
+	wrtier(0) <= write8 or write16;
+
+	reg32: register8 port map(datain(31 downto 24), internal(2), writer(2), dataout(31 downto 24))
+	reg24: register8 port map(datain(23 downto 16), internal(2), writer(2), dataout(23 downto 16))
+	reg16: register8 port map(datain(15 downto 8),  internal(1), writer(1), dataout(15 downto 8))
+	reg08: register8 port map(datain(7 downto 0),   internal(0), writer(0), dataout(7 downto 0))
+	
 end architecture biggermem;
 
 --------------------------------------------------------------------------------
