@@ -118,7 +118,7 @@ begin
 		X"00000000" when others;
 
 	with WriteCmd & WriteReg select
-	escribe<="00000001" when "101010",
+	escribe<="00000001" when	"101010",
 		"00000010" when "101011",
 		"00000100" when "101100",
 		"00001000" when "101101",
