@@ -104,8 +104,8 @@ begin
 		(not Clk) when others;
 
 	--with opcode & funct3 & funct7 select
-	--ImmGen <= when "0110111", 		  --lui
-	       --when others;
+	--ImmGen <= '1' when "0110111", 		  --lui
+	       --'0' when others;
 --
 end Boss;
 
