@@ -88,7 +88,8 @@ architecture holistic of Processor is
 
 begin
 	-- Add your code here
-	step1: registers port map(DataOut(19 downto 15), DataOut(24 downto 20), DataOut(11 downto 0), "1 or 0", 
+	-- TO DO: 1) write all internal in/out signals for components
+        --        2) port map all signals
 	
 end holistic;
 
