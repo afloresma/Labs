@@ -48,8 +48,8 @@ architecture Boss of Control is
 begin
 -- Add your code here
 	with opcode & funct3 select
-	Branch <= "10" when "11000011000", --beg
-		"01" when "11000011001", --bne 
+	Branch <= "10" when "1100011000", --beg
+		"01" when "1100011001", --bne 
 		"00" when others;
 
 	with opcode & funct3 select
@@ -82,7 +82,7 @@ begin
 		 "00000" when "0110111----------", 	   --lui
 		 "11111" when others;
 
-	with opcode & funct3 & funct7 select
+	with opcode & funct3 select
 	MemWrite <= '1' when "0100011010", 	   --sw
 		 '0' when others;
 
@@ -123,10 +123,12 @@ entity ProgramCounter is
 end entity ProgramCounter;
 
 architecture executive of ProgramCounter is
-begin
--- Add your code here
-	Process(Reset,Clock)
 
+begin
+
+Process(Reset,Clock)
+begin
+-- Add your code here	
  		if Reset = '1' then
 			PCout <= "00000000010000000000000000000000"; --reset to start at address 0x00400000
 		elsif falling_edge(Clock) then --not sure if falling_edge or rising_edge
