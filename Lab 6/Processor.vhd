@@ -87,9 +87,72 @@ architecture holistic of Processor is
 
 
 begin
+-- Program Counter Output
+	signal PCOut       : std_logic_vector(29 downto 0);	-- Program Counter to Instruction Memory
+
+	-- Adders signals
+	signal AddOut1	   : std_logic_vector(31 downto 0);
+	signal AddOut2	   : std_logic_vector(31 downto 0);
+	signal c01, c02	   : std_logic;
+	
+	-- Intruction Memory Output
+	signal instruction : std_logic_vector(31 downto 0); 	-- Instruction Memory to Control, Registers, ImmGen
+
+	-- Control Output
+	signal CtrlBranch  : std_logic_vector(1 downto 0);	-- Control to Branch (Eq | Not Eq)
+	signal CtrlMemRead : std_logic;				-- Control to Data Memory
+	signal CtrlMemtoReg: std_logic;				-- Control to Mux after Data Memory
+	signal CtrlALUCtrl : std_logic_vector(4 downto 0);	-- Control to ALU
+	signal CtrlMemWrite: std_logic;				-- Control to Data Memory
+	signal CtrlALUSrc  : std_logic;				-- Control to Mux before ALU
+	signal CtrlRegWrite: std_logic;				-- Control to Registers
+	signal CtrlImmGen  : std_logic_vector(1 downto 0);	-- Control to ImmGen
+
+	-- Registers Output
+	signal ReadD1      : std_logic_vector(31 downto 0);	-- Registers to ALU
+	signal ReadD2      : std_logic_vector(31 downto 0);	-- Registers to ALUMux
+
+	-- Data Memory Output
+	signal ReadD	   : std_logic_vector(31 downto 0);	-- 
+
+	-- Muxes output
+	signal ALUMuxOut   : std_logic_vector(31 downto 0);	-- Mux to ALU
+	signal DMemMuxOut  : std_logic_vector(31 downto 0);	-- Mux to Register Write Data
+	signal AddSumMuxOut: std_logic_vector(31 downto 0);	-- Mux to PC
+
+	signal ALUZero     : std_logic;
+	signal BranchEqNotEq : std_logic;
+begin
 	-- Add your code here
 	-- TO DO: 1) write all internal in/out signals for components
         --        2) port map all signals
-	
+	-- Muxes
+	ALUMux: BusMux2to1   port map(CtrlALUSrc, ReadD2, here, ALUMuxOut); -- ImmGen output goes into the missing port
+	AddMux: BusMux2to1   port map(BranchEqNotEq, AddOut1, AddOut2, AddSumMuxOut);
+	DMemMux: BusMux2to1  port map(CtrlMemtoReg, ALUResultOut, ReadD, DMemMuxOut);
+
+	-- Adders
+	PreAdder: adder_subtracter port map(PCOut, "100", '0', AddOut1, c01);
+	AddSumAdder: adder_subtacter port map(PCOut, here, '0', AddOut2, c02); -- ImmGen output should be on missing spot
+
+	-- Major components
+	PC: ProgramCounter   port map(reset, clock, AddSumMuxOut, PCOut);
+
+	IMEM: InstructionRAM port map(reset, clock, PCOut, instruction);
+
+	Ctrl: Control 	     port map(clock, instruction(6 downto 0), instruction(14 downto 12), instruction(31 downto 27), CtrlBranch, CtrlMemRead, CtrlMemtoReg, CtrlALUCtrl, CtrlRegWrite, CtrlImmGen);
+
+	Regs: Registers      port map(instruction(19 downto 15), instruction(24 downto 20), instruction(11 downto 7), DMemMuxOut, CtrlRegWrite, ReadD1, ReadD2);
+
+	-- Donde esta el componente ImmGen?
+
+	ArithLU: ALU         port map(ReadD1, ALUMuxOut, ALUZero, ALUResultOut);
+
+	DMem: RAM	     port map(reset, clock, CtrlMemRead, CtrlMemWrite, ALUResultOut(29 downto 0), ReadD2, ReadD);
+
+begin
+
+	BranchEqNotEq<= '1' when CtrlBranch & ALUZero = "101" | "010",
+		        '0' when others;
 end holistic;
 
