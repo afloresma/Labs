@@ -86,9 +86,8 @@ architecture holistic of Processor is
 	end component adder_subtracter;
 
 
-begin
 -- Program Counter Output
-	signal PCOut       : std_logic_vector(29 downto 0);	-- Program Counter to Instruction Memory
+	signal PCOut       : std_logic_vector(31 downto 0);	-- Program Counter to Instruction Memory
 
 	-- Adders signals
 	signal AddOut1	   : std_logic_vector(31 downto 0);
@@ -120,39 +119,54 @@ begin
 	signal DMemMuxOut  : std_logic_vector(31 downto 0);	-- Mux to Register Write Data
 	signal AddSumMuxOut: std_logic_vector(31 downto 0);	-- Mux to PC
 
+	-- ALU output
+	signal ALUResultOut: std_logic_vector(31 downto 0);
 	signal ALUZero     : std_logic;
-	signal BranchEqNotEq : std_logic;
+	signal BranchEqNot : std_logic;
+	
+	--ImmGen output
+	signal ImmGenOut   : std_logic_vector(31 downto 0);    -- ImmGen to AddMux, ALUMux 
 begin
 	-- Add your code here
 	-- TO DO: 1) write all internal in/out signals for components
         --        2) port map all signals
 	-- Muxes
-	ALUMux: BusMux2to1   port map(CtrlALUSrc, ReadD2, here, ALUMuxOut); -- ImmGen output goes into the missing port
-	AddMux: BusMux2to1   port map(BranchEqNotEq, AddOut1, AddOut2, AddSumMuxOut);
+	ALUMux: BusMux2to1   port map(CtrlALUSrc, ReadD2, ImmGenOut, ALUMuxOut); -- ImmGen output goes into the missing port
+	AddMux: BusMux2to1   port map(BranchEqNot, AddOut1, AddOut2, AddSumMuxOut);
 	DMemMux: BusMux2to1  port map(CtrlMemtoReg, ALUResultOut, ReadD, DMemMuxOut);
 
 	-- Adders
-	PreAdder: adder_subtracter port map(PCOut, "100", '0', AddOut1, c01);
-	AddSumAdder: adder_subtacter port map(PCOut, here, '0', AddOut2, c02); -- ImmGen output should be on missing spot
+	PreAdder: adder_subtracter port map(PCOut, "00000000000000000000000000000100", '0', AddOut1, c01);
+	AddSumAdder: adder_subtracter port map(PCOut, ImmGenOut, '0', AddOut2, c02); -- ImmGen output should be on missing spot
 
 	-- Major components
 	PC: ProgramCounter   port map(reset, clock, AddSumMuxOut, PCOut);
 
-	IMEM: InstructionRAM port map(reset, clock, PCOut, instruction);
+	IMEM: InstructionRAM port map(reset, clock, PCOut(31 downto 2), instruction);
 
-	Ctrl: Control 	     port map(clock, instruction(6 downto 0), instruction(14 downto 12), instruction(31 downto 27), CtrlBranch, CtrlMemRead, CtrlMemtoReg, CtrlALUCtrl, CtrlRegWrite, CtrlImmGen);
+	Ctrl: Control 	     port map(clock, instruction(6 downto 0), instruction(14 downto 12), instruction(31 downto 25), CtrlBranch, CtrlMemRead, CtrlMemtoReg, CtrlALUCtrl,CtrlMemWrite,CtrlALUSrc, CtrlRegWrite, CtrlImmGen);
 
 	Regs: Registers      port map(instruction(19 downto 15), instruction(24 downto 20), instruction(11 downto 7), DMemMuxOut, CtrlRegWrite, ReadD1, ReadD2);
 
-	-- Donde esta el componente ImmGen?
+	ArithLU: ALU         port map(ReadD1, ALUMuxOut, CtrlALUCtrl, ALUZero, ALUResultOut);
 
-	ArithLU: ALU         port map(ReadD1, ALUMuxOut, ALUZero, ALUResultOut);
+	DMem: RAM	     port map(reset, clock, CtrlMemRead, CtrlMemWrite, ALUResultOut(31 downto 2), ReadD2, ReadD);
 
-	DMem: RAM	     port map(reset, clock, CtrlMemRead, CtrlMemWrite, ALUResultOut(29 downto 0), ReadD2, ReadD);
+	with CtrlBranch & ALUZero select
+	BranchEqNot <=   '1' when "101",
+                         '1' when "010",
+		         '0' when others;
 
-begin
-
-	BranchEqNotEq<= '1' when CtrlBranch & ALUZero = "101" | "010",
-		        '0' when others;
+	with CtrlImmGen & instruction(31) select
+	ImmGenOut <=   "111111111111111111111" & instruction(30 downto 20) when "001",  --I_type
+                       "000000000000000000000" & instruction(30 downto 20) when "000",  --I_type
+		       "111111111111111111111" & instruction(30 downto 25) & instruction(11 downto 7) when "011",  --S_type
+                       "000000000000000000000" & instruction(30 downto 25) & instruction(11 downto 7) when "010",  --S_type
+		        "11111111111111111111" & instruction(7) & instruction(30 downto 25) & instruction(11 downto 8) & '0' when "101", --B_type
+                        "00000000000000000000" & instruction(7) & instruction(30 downto 25) & instruction(11 downto 8) & '0' when "100", --B_type
+			                   "1" & instruction(30 downto 12) & "000000000000" when "111", --U_type
+                                           "0" & instruction(30 downto 12) & "000000000000" when "110", --U_type
+           "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" when others;
+ 
 end holistic;
 

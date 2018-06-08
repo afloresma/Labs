@@ -103,9 +103,16 @@ begin
 		   '0' when "0110111---",		   --lui
 		(not Clk) when others;
 
-	--with opcode & funct3 & funct7 select
-	--ImmGen <= when "0110111", 		  --lui
-	       --when others;
+	with opcode & funct3 select
+	ImmGen <= "00" when "0010011000", 		  --addi
+		  "00" when "0010011111", 		  --andi
+ 		  "00" when "0010011110", 		 --ori
+   		  "00" when "0000011010",                --lw
+		  "01" when "0100011010", 		 --sw
+	          "10" when "1100011000", 		 --beq
+		  "10" when "1100011001", 		 --bne
+		  "11" when "0110111---", 		 --lui
+	          "ZZ" when others;
 --
 end Boss;
 

@@ -1,0 +1,118 @@
+{D:/Micro/Lab 6/ALU.vhd} {2 {vcom -work work -2002 -explicit -stats=none {D:/Micro/Lab 6/ALU.vhd}
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity ALU
+-- Compiling architecture ALU_Arch of ALU
+** Warning: D:/Micro/Lab 6/ALU.vhd(65): (vcom-1563) Choice in selected signal assignment must be locally static.
+
+
+} {} {}} {D:/Micro/Lab 6/registers.vhd} {2 {vcom -work work -2002 -explicit -stats=none {D:/Micro/Lab 6/registers.vhd}
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity bitstorage
+-- Compiling architecture memlike of bitstorage
+-- Compiling entity fulladder
+-- Compiling architecture addlike of fulladder
+-- Compiling entity register8
+-- Compiling architecture memmy of register8
+-- Compiling entity register32
+-- Compiling architecture biggermem of register32
+-- Compiling entity adder_subtracter
+-- Compiling architecture calc of adder_subtracter
+-- Compiling entity shift_register
+-- Compiling architecture shifter of shift_register
+** Warning: D:/Micro/Lab 6/registers.vhd(189): (vcom-1186) Array type selected signal assignment expression must be of a locally static subtype.
+
+
+} {} {}} {D:/Micro/Lab 6/RAM.vhd} {2 {vcom -work work -2002 -explicit -stats=none {D:/Micro/Lab 6/RAM.vhd}
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity RAM
+-- Compiling architecture staticRAM of RAM
+-- Compiling entity Registers
+-- Compiling architecture remember of Registers
+** Warning: D:/Micro/Lab 6/RAM.vhd(120): (vcom-1186) Array type selected signal assignment expression must be of a locally static subtype.
+
+
+} {} {}} {D:/Micro/Lab 6/Processor.vhd} {2 {vcom -work work -2002 -explicit -stats=none {D:/Micro/Lab 6/Processor.vhd}
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity Processor
+-- Compiling architecture holistic of Processor
+** Warning: D:/Micro/Lab 6/Processor.vhd(155): (vcom-1186) Array type selected signal assignment expression must be of a locally static subtype.
+
+** Warning: D:/Micro/Lab 6/Processor.vhd(160): (vcom-1186) Array type selected signal assignment expression must be of a locally static subtype.
+
+
+} {} {}} {D:/Micro/Lab 6/tProcessor.vhd} {1 {vcom -work work -2002 -explicit -stats=none {D:/Micro/Lab 6/tProcessor.vhd}
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Loading package NUMERIC_STD
+-- Compiling entity tProcessor_vhd
+-- Compiling architecture behavior of tProcessor_vhd
+
+} {} {}} {D:/Micro/Lab 6/ProcElements.vhd} {2 {vcom -work work -2002 -explicit -stats=none {D:/Micro/Lab 6/ProcElements.vhd}
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity BusMux2to1
+-- Compiling architecture selection of BusMux2to1
+-- Compiling entity Control
+-- Compiling architecture Boss of Control
+** Warning: D:/Micro/Lab 6/ProcElements.vhd(50): (vcom-1186) Array type selected signal assignment expression must be of a locally static subtype.
+
+** Warning: D:/Micro/Lab 6/ProcElements.vhd(55): (vcom-1186) Array type selected signal assignment expression must be of a locally static subtype.
+
+** Warning: D:/Micro/Lab 6/ProcElements.vhd(59): (vcom-1186) Array type selected signal assignment expression must be of a locally static subtype.
+
+** Warning: D:/Micro/Lab 6/ProcElements.vhd(66): (vcom-1186) Array type selected signal assignment expression must be of a locally static subtype.
+
+** Warning: D:/Micro/Lab 6/ProcElements.vhd(85): (vcom-1186) Array type selected signal assignment expression must be of a locally static subtype.
+
+** Warning: D:/Micro/Lab 6/ProcElements.vhd(89): (vcom-1186) Array type selected signal assignment expression must be of a locally static subtype.
+
+** Warning: D:/Micro/Lab 6/ProcElements.vhd(99): (vcom-1186) Array type selected signal assignment expression must be of a locally static subtype.
+
+** Warning: D:/Micro/Lab 6/ProcElements.vhd(106): (vcom-1186) Array type selected signal assignment expression must be of a locally static subtype.
+
+-- Compiling entity ProgramCounter
+-- Compiling architecture executive of ProgramCounter
+
+} {} {}} {D:/Micro/Lab 6/InstrMemory.vhd} {1 {vcom -work work -2002 -explicit -stats=none {D:/Micro/Lab 6/InstrMemory.vhd}
+Model Technology ModelSim PE Student Edition vcom 10.4a Compiler 2015.03 Apr  7 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity InstructionRAM
+-- Compiling architecture instrucRAM of InstructionRAM
+
+} {} {}}
