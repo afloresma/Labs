@@ -23,7 +23,7 @@ architecture staticRAM of RAM is
    type ram_type is array (0 to 127) of std_logic_vector(31 downto 0);
    signal i_ram : ram_type;
    signal dummie: integer range 0 to 127;
-	
+   
 begin
 
   RamProc: process(Clock, Reset, OE, WE, Address) is
@@ -39,23 +39,17 @@ begin
     if falling_edge(Clock) then
 	-- Add code to write data to RAM
 	-- Use to_integer(unsigned(Address)) to index the i_ram array
-	if WE = '1' then
-		for i in 0 to 127 loop       
-			i_ram (i) <= DataIn(31 downto 0);
- 		end loop;
+	if WE = '1'  and to_integer(unsigned(Address)) < 128  then
+		i_ram (to_integer(unsigned(Address))) <= DataIn(31 downto 0);
+ 		
 	end if;
 	
     end if;
 	-- Rest of the RAM implementation
     
-    if OE = '0' then
+    if OE = '0' and to_integer(unsigned(Address)) < 128 then
 	dummie <= to_integer(unsigned(Address));
 	DataOut <= i_ram(dummie);
-
-	else
-      	for i in 0 to 127 loop   
-        	i_ram(i) <= "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
-     	end loop;
     end if;
 
   end process RamProc;
@@ -127,7 +121,7 @@ begin
 		"01000000" when "110000",
 		"10000000" when "110001",
 		"00000000" when others;
-							   --escribe
+							 -- escribe
 	x10: register32 port map(WriteData, zero, one, one, escribe(0), zero, zero, a0);
 	x11: register32 port map(WriteData, zero, one, one, escribe(1), zero, zero, a1);
 	x12: register32 port map(WriteData, zero, one, one, escribe(2), zero, zero, a2);

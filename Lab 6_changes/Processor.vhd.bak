@@ -109,7 +109,7 @@ architecture holistic of Processor is
 
 	-- Registers Output
 	signal ReadD1      : std_logic_vector(31 downto 0);	-- Registers to ALU
-	signal ReadD2      : std_logic_vector(31 downto 0);	-- Registers to ALUMux
+	signal ReadD2      : std_logic_vector(31 downto 0);	-- Registers to ALUMux, RAM
 
 	-- Data Memory Output
 	signal ReadD	   : std_logic_vector(31 downto 0);	-- 
@@ -126,6 +126,8 @@ architecture holistic of Processor is
 	
 	--ImmGen output
 	signal ImmGenOut   : std_logic_vector(31 downto 0);    -- ImmGen to AddMux, ALUMux 
+	
+	signal finally : std_logic_vector(29 downto 0);
 begin
 	-- Add your code here
 	-- TO DO: 1) write all internal in/out signals for components
@@ -149,8 +151,10 @@ begin
 	Regs: Registers      port map(instruction(19 downto 15), instruction(24 downto 20), instruction(11 downto 7), DMemMuxOut, CtrlRegWrite, ReadD1, ReadD2);
 
 	ArithLU: ALU         port map(ReadD1, ALUMuxOut, CtrlALUCtrl, ALUZero, ALUResultOut);
+	
+	finally <= "000"& ALUResultOut(27 downto 2);
 
-	DMem: RAM	     port map(reset, clock, CtrlMemRead, CtrlMemWrite, ALUResultOut(31 downto 2), ReadD2, ReadD);
+	DMem: RAM	     port map(reset, clock, CtrlMemRead, CtrlMemWrite, finally, ReadD2, ReadD);
 
 	with CtrlBranch & ALUZero select
 	BranchEqNot <=   '1' when "101",
